@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>생태와 환경 퀴즈 게임</title>
+  <style>
+    body {
+      font-family: "Pretendard", sans-serif;
+      background: #eaf7ea;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #2c662d;
+      margin-bottom: 20px;
+    }
+    .quiz-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      max-width: 600px;
+      width: 100%;
+    }
+    .question {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px;
+      border: 2px solid #a7d7a9;
+      border-radius: 8px;
+      background: #f5fff5;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.2s;
+    }
+    .options button:hover {
+      background: #d8f8d9;
+    }
+    .hidden { display: none; }
+    #result {
+      font-size: 20px;
+      text-align: center;
+      color: #2c662d;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    #restartBtn {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 생태와 환경 퀴즈 🌎</h1>
+  <div class="quiz-container">
+    <div id="quiz"></div>
+    <div id="result" class="hidden"></div>
+    <button id="restartBtn" class="hidden">다시 시작하기</button>
+  </div>
+
+  <script>
+    const quizData = [
+      { q: "1. 생태계의 구성 요소 중 비생물적 요인이 아닌 것은?", a: ["온도", "빛", "물", "식물"], correct: 3 },
+      { q: "2. 온실 효과의 주요 원인 물질은?", a: ["산소", "이산화탄소", "질소", "아르곤"], correct: 1 },
+      { q: "3. 생물 다양성이 높은 지역은?", a: ["사막", "열대 우림", "극지방", "도심지"], correct: 1 },
+      { q: "4. 오존층이 파괴되면 증가하는 것은?", a: ["자외선", "산소", "탄소량", "비"], correct: 0 },
+      { q: "5. 환경 오염 중 수질 오염의 주요 원인은?", a: ["농약", "소음", "빛", "먼지"], correct: 0 },
+      { q: "6. 생태 발자국이란?", a: ["나무의 성장 속도", "인간이 사용하는 자원의 양", "동물의 이동 거리", "기후 변화 정도"], correct: 1 },
+      { q: "7. 산성비의 주요 원인은?", a: ["질소산화물과 황산화물", "산소와 질소", "오존", "탄소"], correct: 0 },
+      { q: "8. 지속 가능한 발전이란?", a: ["경제만 우선하는 발전", "환경을 고려하지 않는 발전", "현재와 미래 세대가 함께 이익을 얻는 발전", "기술 중심의 발전"], correct: 2 },
+      { q: "9. 기후 변화로 인해 가장 직접적인 영향을 받는 것은?", a: ["생태계", "광고 산업", "스포츠 경기", "통신망"], correct: 0 },
+      { q: "10. 해양 생태계의 파괴 원인으로 올바른 것은?", a: ["바다 쓰레기", "숲 파괴", "도시 개발", "소음 공해"], correct: 0 }
+    ];
+
+    const quizEl = document.getElementById("quiz");
+    const resultEl = document.getElementById("result");
+    const restartBtn = document.getElementById("restartBtn");
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      if (current >= quizData.length) {
+        quizEl.innerHTML = "";
+        resultEl.classList.remove("hidden");
+        resultEl.textContent = `🎉 퀴즈 완료! 당신의 점수는 ${score} / ${quizData.length}점입니다.`;
+        restartBtn.classList.remove("hidden");
+        return;
+      }
+      const q = quizData[current];
+      quizEl.innerHTML = `
+        <div class="question">${q.q}</div>
+        <div class="options">
+          ${q.a.map((opt, i) => `<button onclick="selectOption(${i})">${opt}</button>`).join("")}
+        </div>
+      `;
+    }
+
+    window.selectOption = function(i) {
+      if (i === quizData[current].correct) score++;
+      current++;
+      loadQuestion();
+    };
+
+    restartBtn.onclick = function() {
+      current = 0;
+      score = 0;
+      resultEl.classList.add("hidden");
+      restartBtn.classList.add("hidden");
+      loadQuestion();
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>
